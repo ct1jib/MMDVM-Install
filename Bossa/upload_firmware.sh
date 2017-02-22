@@ -2,7 +2,7 @@
 
 #####################################################
 #                                                   #
-#          Upload firmware to MMDVM Due             #
+#          Upload firmware para MMDVM Due             #
 #                                                   #
 #####################################################
 
@@ -15,11 +15,11 @@ fi
 # Exit if the file does not exist
 if [ ! -f "$FILE" ]
 then
-    echo "File $FILE does not exists"
+    echo "Ficheiro $FILE nao existe"
     exit 255
 fi
 
-systemctl stop mmdvm.service
+systemctl stop mmdvmhost
 
 sleep 2
 
@@ -28,7 +28,7 @@ stty -F /dev/ttyACM0 speed 1200 cs8 -cstopb -parenb  > /dev/null 2>&1
 sleep 2
 
 echo
-echo "writing firmware $FILE to MMDVM"
+echo "escrever o novo firmware $FILE no MMDVM"
 echo
 
 bossac --port=ttyACM0 --force_usb_port=false --erase --write --verify --boot=1 --reset $FILE
@@ -47,5 +47,9 @@ fi
 
 sleep 2
 
-# systemctl start mmdvm.service
+systemctl start mmdvmhost
+
+sleep 2
+
+systemctl status mmdvmhost
 
